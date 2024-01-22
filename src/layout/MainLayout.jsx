@@ -5,11 +5,11 @@ import Header from "../shared/Header";
 
 const MainLayout = () => {
     return (
-        <>
+        <div className="relative">
             <Header />
             <Outlet />
             <Footer />
-        </>
+        </div>
     );
 };
 

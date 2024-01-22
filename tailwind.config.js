@@ -5,7 +5,17 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      container:{
+        center:true,
+      },
+      fontFamily: {
+        primary: ['Montserrat', 'sans-serif']
+      },
+      colors: {
+        primary: '#FF385C',
+      }
+    },
   },
   plugins: [],
 }
