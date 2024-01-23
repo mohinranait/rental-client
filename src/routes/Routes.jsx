@@ -9,6 +9,7 @@ import OwnerLayout from "../layout/OwnerLayout";
 import OwnerDashboard from "../pages/owner/OwnerDashboard";
 import HouseLists from "../pages/owner/HouseLists";
 import HouseCreate from "../pages/owner/HouseCreate";
+import PrivateRoute from "./PrivateRoute";
 
 const myRoutes = createBrowserRouter([
     {
@@ -31,7 +32,7 @@ const myRoutes = createBrowserRouter([
     },
     {
         path: "/owner",
-        element: <OwnerLayout />,
+        element: <PrivateRoute><OwnerLayout /></PrivateRoute> ,
         children: [
             {
                 path: 'dashboard',

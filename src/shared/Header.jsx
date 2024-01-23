@@ -3,6 +3,7 @@ import Container from "../layout/Container";
 import Logo from "../components/logo/Logo";
 import useAuth from "../hooks/useAuth";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 
 
@@ -30,7 +31,7 @@ const Header = () => {
                                 <span className="text-white ">{user?.name}</span>
                                 {
                                     isToggle &&   <ul className="absolute top-full right-0 w-[200px] bg-white rounded border border-gray-100  py-2">
-                                        <li><a href="#" className="px-3 py-2 hover:bg-gray-100 inline-block w-full">Dashboard</a></li>
+                                        <li><Link to={`/owner/dashboard`} className="px-3 py-2 hover:bg-gray-100 inline-block w-full">Dashboard</Link></li>
                                         <li><button onClick={() => logOut()} className="px-3 py-2 text-left hover:bg-gray-100 inline-block w-full">Logout</button></li>
                                     </ul>
                                 }

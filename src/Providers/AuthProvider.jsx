@@ -6,13 +6,14 @@ export const AuthContext = createContext({});
 
 const AuthProvider = ({children}) => {
     const [user, setUser] = useState({});
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const axios = useAxios();
 
 
 
     const logOut = async () => {
         try {
+          
             const res = await axios.post(`/logout`, {id:user?._id});
             if(res.data.success){
                 setUser({})
@@ -23,6 +24,7 @@ const AuthProvider = ({children}) => {
     }
 
     useEffect(() => {
+        console.log('use effect');
         const getAuthUser = async () => {
             try {
                 setLoading(true)
@@ -30,8 +32,11 @@ const AuthProvider = ({children}) => {
                 if(res.data?.success){
                     setLoading(false)
                     setUser(res.data?.user);
+                    console.log(res.data?.user);
                 }
             } catch (error) {
+                setLoading(false)
+            }finally{
                 setLoading(false)
             }
         }
