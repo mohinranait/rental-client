@@ -19,7 +19,6 @@ const Login = () => {
     })
 
 
-
     const handleLogin = async (e) => {
         e.preventDefault();
         const { email, password} = formValue;
@@ -35,7 +34,14 @@ const Login = () => {
             if(res.data.success){
                 // console.log(res.data.user.role);
                 setUser(res.data.user);
-                navigate('/')
+                if(res.data?.user?.role == 'houseOwner'){
+                    const path = JSON.parse(localStorage.getItem('path'));
+               
+                    navigate(path ? path : res.data?.user?.role == 'houseOwner' ? '/owner/dashboard' : '/user/dashboard' )
+                    localStorage.removeItem('path')
+                }else{
+                    navigate('/')
+                }
                 setLoading(false)
             }
         } catch (error) {

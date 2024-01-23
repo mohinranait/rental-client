@@ -10,6 +10,9 @@ import OwnerDashboard from "../pages/owner/OwnerDashboard";
 import HouseLists from "../pages/owner/HouseLists";
 import HouseCreate from "../pages/owner/HouseCreate";
 import PrivateRoute from "./PrivateRoute";
+import HouseUpdate from "../pages/owner/HouseUpdate";
+import House from "../pages/Single/House";
+import RantalDashboard from "../pages/Rental/RantalDashboard";
 
 const myRoutes = createBrowserRouter([
     {
@@ -21,12 +24,21 @@ const myRoutes = createBrowserRouter([
                 element: <Home />
             },
             {
+                path:"/house/:id",
+                element: <House />,
+                loader: ({params}) => fetch(`${import.meta.env.VITE_SERVER_PORT}//house/${params?.id}`)
+            },
+            {
                 path:"/login",
                 element: <Login />
             },
             {
                 path:"/register",
                 element: <Register />
+            },
+            {
+                path:"/user/dashboard",
+                element: <PrivateRoute><RantalDashboard /></PrivateRoute>
             },
         ]
     },
@@ -41,6 +53,10 @@ const myRoutes = createBrowserRouter([
             {
                 path: 'houses',
                 element: <HouseLists />
+            },
+            {
+                path: 'houses/:id',
+                element: <HouseUpdate />
             },
             {
                 path: 'new-houses',

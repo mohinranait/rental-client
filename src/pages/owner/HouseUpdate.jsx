@@ -1,28 +1,31 @@
 import { useEffect, useState } from "react";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useNavigate, useParams } from "react-router-dom";
+import ButtonPrimary from "../../components/buttons/ButtonPrimary";
 import Input from "../../components/input/Input";
 import data from "../../services/data";
-import ButtonPrimary from "../../components/buttons/ButtonPrimary";
+import { CgSpinnerTwo } from "react-icons/cg";
 import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
-import { CgSpinnerTwo } from "react-icons/cg";
 
 
-const HouseCreate = () => {
+const HouseUpdate = () => {
     const {user} = useAuth();
-    const axios = useAxios();
+    const {id} = useParams();
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false)
     const [selectedFiles, setSelectedFiles] = useState(null);
     const [error, setError]= useState('')
+    const axios = useAxios();
     const [selectedFeatures, setSelectedFeatures] = useState([]);
-    const [uploadImageText, setUploadImageText] = useState("Upload images");
-    const [loading, setLoading]= useState(false)
     const [house, setHouse] = useState({
         name:'',
         address:'',
         city:'',
-        bedrooms:1,
-        bathrooms:1,
-        roomSize:100,
-        garages:1,
+        bedrooms:'',
+        bathrooms:'',
+        roomSize:'',
+        garages:'',
         phone:'',
         description:'',
         features:false,
@@ -32,9 +35,59 @@ const HouseCreate = () => {
             propertyStatus: '',
         },
         owner: user?._id,
-        price:100,
+        price:'',
     })
+    const axiosPublic = useAxiosPublic();
 
+
+    useEffect(() => {
+        const getSingleHouse = async () => {
+            const res  = await axiosPublic.get(`/house/${id}`)
+            setHouse( res.data?.house);
+            // setSelectedFiles( res.data?.house?.images);
+            setSelectedFeatures(res.data?.house?.extraFeatures)
+        }
+        getSingleHouse();
+    },[id])
+
+    const handleHouse = async (e) => {
+        e.preventDefault();
+
+        try {
+            setLoading(true);
+            // upload images
+            let imageArry = []
+            if(selectedFiles?.length > 0){
+                const formData = new FormData();
+                for (const file of selectedFiles) {
+                    formData.append('images', file);
+                }
+                const {data} = await axios.post(`/upload`, formData )
+                imageArry = [...imageArry, ...data.images ]
+            }
+           
+            
+            const updateObj =  {
+                ...house, 
+                extraFeatures: selectedFeatures, 
+                images: imageArry?.length > 0 ? imageArry : house?.images 
+            }
+            try {
+                // upload house information
+                const res = await axios.patch(`/house/${id}?userId=${user?._id}`, updateObj )
+                if(res.data.success){
+                    setLoading(false)
+                    navigate('/owner/houses')
+                }
+            } catch (error) {
+                setError(error.message)
+            }
+        } catch (error) {
+            setError(error.message)
+        }finally{
+            setLoading(false)
+        }      
+    }
 
     const handleSelectMultiple = (event) => {
         const selectedFeature = event.target.value;
@@ -47,75 +100,12 @@ const HouseCreate = () => {
         }
     };
 
-
-    const handleHouse = async e => {
-        e.preventDefault();
-        const {name, address,price, city,phone,description,property} = house;
-        if(name?.length == 0)return setError("Name filed is require")  
-        if(address?.length == 0)return setError("Address filed is require")  
-        if(city?.length == 0)return setError("City is require")  
-        if(property.propertyId?.length == 0)return setError("Property ID is require")
-        if(phone?.length == 0)return setError("Phone is require")  
-        if(description?.length == 0)return setError("Description is require")
-        if(price?.length == 0)return setError("Price is require")
-        if(!selectedFiles ) return setError("Please upload images")
-        // console.log(selectedFeatures);
-
-        try {
-            setLoading(true);
-            // upload images
-            const formData = new FormData();
-            for (const file of selectedFiles) {
-                formData.append('images', file);
-            }
-            const {data} = await axios.post(`/upload`, formData )
-            if(data.success){
-                try {
-                    // upload house information
-                    const res = await axios.post(`/house`, {...house, extraFeatures: selectedFeatures, images:data?.images })
-                    if(res.data.success){
-                        console.log(res.data);
-                        setLoading(false)
-                        setHouse({
-                            name:'',
-                            address:'',
-                            city:'',
-                            bedrooms:1,
-                            bathrooms:1,
-                            roomSize:1,
-                            phone:'',
-                            description:'',
-                            features:false,
-                            property: {
-                                propertyId: '',
-                                propertyType: '',
-                                propertyStatus: '',
-                            },
-                            owner: user?._id,
-                        })
-                        // console.log('created success');
-                    }
-                } catch (error) {
-                    setError(error.message)
-                }
-            }
-           
-           
-        } catch (error) {
-            setError(error.message)
-        }finally{
-            setLoading(false)
-        }        
-    }
-
-
     const handleFileChange = (e) => {
         setSelectedFiles(e.target.files);
     };
-    
-    useEffect(() => {
-        setUploadImageText(selectedFiles?.length > 0 ?  'Select '+ selectedFiles?.length + ' Images' : "Upload images")
-    },[selectedFiles])
+
+
+
 
 
     return (
@@ -128,6 +118,7 @@ const HouseCreate = () => {
                    
                     <div className="space-y-4 rounded shadow p-4 bg-white">
                         <p className="text-lg font-medium text-gray-600">House Information</p>
+                      
                         <div>
                             <label htmlFor="" className="text-sm font-medium text-gray-500">House name</label>
                             <Input 
@@ -157,7 +148,7 @@ const HouseCreate = () => {
                                 >
                                     <option value="">Select City</option>
                                     {
-                                        data.citys?.map(city => <option key={city?._id} value={city?.value} >{city?.label}</option> )
+                                        data.citys?.map(city => <option key={city?._id} value={city?.value} selected={city?.value == house?.city } >{city?.label}</option> )
                                     }
                                 </select>
                             </div>
@@ -200,7 +191,7 @@ const HouseCreate = () => {
                         </div>
                         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div>
-                                <label htmlFor="" className="text-sm font-medium text-gray-500">Property ID</label>
+                            <label htmlFor="" className="text-sm font-medium text-gray-500">Property ID</label>
                                 <Input 
                                 type={'text'}
                                 placeholder={"Property ID"}
@@ -209,7 +200,7 @@ const HouseCreate = () => {
                                  />
                             </div>
                             <div>
-                                <label htmlFor="" className="text-sm font-medium text-gray-500">Phone </label>
+                            <label htmlFor="" className="text-sm font-medium text-gray-500">Phone</label>
                                 <Input 
                                 type={'number'}
                                 placeholder={"Phone"}
@@ -218,20 +209,20 @@ const HouseCreate = () => {
                                 />
                             </div>
                             <div>
-                            <label htmlFor="" className="text-sm font-medium text-gray-500">Property Type</label>
+                            <label htmlFor="" className="text-sm font-medium text-gray-500">Property type</label>
                                 <select 
                                 name="" 
                                 id="" 
                                 onChange={(e) => setHouse( {...house,  property:{...house.property,propertyType :e.target.value}})}
                                 className='py-2 w-full outline-none border px-3 rounded '>
-                                    <option value="House">Property Types</option>
-                                    <option value="House">House</option>
-                                    <option value="Hotel">Hotel</option>
-                                    <option value="Resort">Resort</option>
+                                    <option value="">Property Types</option>
+                                    <option value="House" selected={house?.property?.propertyType == 'House'} >House</option>
+                                    <option value="Hotel" selected={house?.property?.propertyType == 'Hotel'} >Hotel</option>
+                                    <option value="Resort" selected={house?.property?.propertyType == 'Resort'} >Resort</option>
                                 </select>
                             </div>
                             <div>
-                                <label htmlFor="" className="text-sm font-medium text-gray-500">Property status</label>
+                            <label htmlFor="" className="text-sm font-medium text-gray-500">Property status</label>
                                 <select 
                                 name="" 
                                 id=""  
@@ -239,8 +230,9 @@ const HouseCreate = () => {
                                 className='py-2 w-full outline-none border px-3 rounded '
                                 >
                                     <option value="For Rent">Property Status</option>
-                                    <option value="For Sale">For Sale</option>
-                                    <option value="For Rent">For Rent</option>
+                                    <option value="For Sale" selected={house?.property?.propertyStatus == 'For Sale'} >For Sale</option>
+                                    <option value="For Rent" selected={house?.property?.propertyStatus == 'For Rent'} >For Rent</option>
+                                   
                                 </select>
                             </div>
                            
@@ -265,7 +257,7 @@ const HouseCreate = () => {
                                         // onChange={(e) => setUploadImageText(e.target.files[0].name) }
                                         />
                                         <div className='bg-primary py-2 overflow-x-auto max-w-[250px] overflow-hidden text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-primary'>
-                                            <span>{uploadImageText}</span>
+                                            <span>{'uploadImageText'}</span>
                                         </div>
                                     </label>
                                 </div>
@@ -309,7 +301,7 @@ const HouseCreate = () => {
                             </label>
                         </div>
                         <div>
-                            <label htmlFor="" className="text-sm font-medium text-gray-500">Phone </label>
+                            <label htmlFor="" className="text-sm font-medium text-gray-500">Price </label>
                             <Input 
                             type={'number'}
                             placeholder={"Price"}
@@ -319,7 +311,7 @@ const HouseCreate = () => {
                         </div>
                         <div>
                             <ButtonPrimary type={'submit'}>
-                                <span className="flex gap-2 items-center justify-center min-w-[160px]">  {loading ? <CgSpinnerTwo size={23} className="animate-spin" /> : 'Create House'}</span>
+                                <span className="flex gap-2 items-center justify-center min-w-[160px]">  {loading ? <CgSpinnerTwo size={23} className="animate-spin" /> : 'Update House'}</span>
                             </ButtonPrimary>
                         </div>
                     </div>
@@ -329,4 +321,4 @@ const HouseCreate = () => {
     );
 };
 
-export default HouseCreate;
+export default HouseUpdate;

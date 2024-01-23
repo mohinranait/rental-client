@@ -1,8 +1,19 @@
 import Container from "../../layout/Container";
 import banner from "../../../public/images/background/bg-h-1.jpg"
 import HouseCard from "../../components/card/HouseCard";
+import { useEffect, useState } from "react";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Home = () => {
+    const [houses, setHouses] = useState([]);
+    const axiosPublic = useAxiosPublic();
+    useEffect(() => {
+        const getHouses = async () => {
+            const res = await axiosPublic.get(`/houses`);
+            setHouses(res.data?.houses);
+        }
+        getHouses();
+    },[])
     return (
         <main>
             <section>
@@ -28,10 +39,10 @@ const Home = () => {
                             <p className="text-gray-700 text-center mt-4">These are our featured properties</p>
                         </div>
                         <div className="grid lg:grid-cols-2 gap-5">
-                            <HouseCard />
-                            <HouseCard />
-                            <HouseCard />
-                            <HouseCard />
+                            {
+                                houses?.length > 0 && houses?.map(house =>  <HouseCard key={house?._id} house={house} /> )
+                            }
+                          
                         </div>
                     </Container>
                 </div>
