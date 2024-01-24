@@ -12,7 +12,7 @@ const HouseCard = ({house}) => {
     return (
         <div className='bg-white rounded grid md:grid-cols-2 overflow-hidden'>
             <div className='border-gray-100 border-r'>
-                <img src={`${import.meta.env.VITE_IMAGE_ACCESS}/images/${images[0]}`} className='h-full object-contain mx-auto' alt="" />
+                <img src={images[0]} className='h-full object-contain mx-auto' alt="" />
             </div>
             <div className='flex flex-col p-4'>
                 <div className=''>

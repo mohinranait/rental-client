@@ -160,6 +160,8 @@ const BookingForm = ({house}) => {
                     ></textarea>
                 </div>
                 {
+                    user?._id ? <>
+                     {
                     book ?  <ButtonPrimary type={'submit'} options={'w-full py-3'}>
                     <span className="flex gap-2 items-center justify-center">  {loading ? <CgSpinnerTwo size={23} className="animate-spin" /> : 'Request Booking'}</span>
                 </ButtonPrimary> : 
@@ -167,6 +169,11 @@ const BookingForm = ({house}) => {
                      Already booking
                 </ButtonPrimary>
                 }
+                </>:<><ButtonPrimary type={'submit'} options={'w-full py-3'}>
+                    <span className="flex gap-2 items-center justify-center">  {loading ? <CgSpinnerTwo size={23} className="animate-spin" /> : 'Request Booking'}</span>
+                </ButtonPrimary></>
+                }
+               
                
             </form>   
         </>

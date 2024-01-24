@@ -63,7 +63,7 @@ const Home = () => {
                             </div>
                             <div className=" left-2/4 -translate-x-2/4 bg-white  rounded shadow py-7  absolute -bottom-72 sm:-bottom-32 w-full lg:w-[70vw] z-[999] px-8">
                                 <p className="text-xl font-medium text-gray-700 mb-2">Filters</p>
-                                <div className="sm:flex space-y-3 items-center justify-center gap-3 mb-3">
+                                <div className="sm:flex  items-center justify-center gap-3 mb-3">
                                     <Input type={'text'} onChange={handleSearch} placeholder={"Search"} />
                                     <select name="" onChange={handleChange} className='py-2 w-full outline-none border px-3 rounded focus-visible:border-primary transition-all ' id="">
                                         <option value="">City</option>

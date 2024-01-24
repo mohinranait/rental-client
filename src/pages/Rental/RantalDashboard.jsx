@@ -15,7 +15,7 @@ const RantalDashboard = () => {
             // console.log(res.data); 
             setBookings(res.data?.bookings); 
         }
-        getBookings();
+         if(user?._id) getBookings();
     },[])
 
     const deleteBooking = async (id) => {

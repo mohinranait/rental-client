@@ -7,14 +7,14 @@ import { CiMoneyBill } from "react-icons/ci";
 
 
 const BookingCard = ({booking,deleteBooking}) => {
-    console.log(booking);
+    // console.log(booking);
     const {houseImage,houseName,extraFeatures,houseCity,familyMember,price,children,_id, houseAddress,bedrooms,bathrooms,roomSize,garages,endMonth} = booking || {};
 
     return (
         <div className="border overflow-hidden bg-white border-gray-200 rounded shadow">
             <div className="grid lg:grid-cols-5 gap-4">
                 <div className="lg:col-span-5 xl:col-span-2 flex items-center justify-center">
-                    <img src={`${import.meta.env.VITE_IMAGE_ACCESS}/images/${houseImage}`} alt="" />
+                    <img src={houseImage} alt="" />
                 </div>
                 <div className="lg:col-span-3 xl:col-span-2 py-4 px-4 xl:px-0">
                     <p className="text-xl font-medium mb-1">{houseName}</p>

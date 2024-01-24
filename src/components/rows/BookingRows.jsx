@@ -14,7 +14,7 @@ const BookingRows = ({booking, index}) => {
                     <span>{user?.phone}</span> 
                 </td>
                 <td className="py-4">
-                    <img src={`${import.meta.env.VITE_IMAGE_ACCESS}/images/${houseImage}`} className="w-8 h-8 rounded" alt="" /> <br /> {houseName}
+                    <img src={houseImage} className="w-8 h-8 rounded" alt="" /> <br /> {houseName}
                 </td>
                 <td className="py-4">
                     {houseAddress} <br /> {houseCity}

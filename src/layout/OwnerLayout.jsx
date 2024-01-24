@@ -32,7 +32,7 @@ const OwnerLayout = () => {
                                 
                                 <span className="text-gray-700 ">{user?.name}</span>
                                 <span className="w-10 h-10 rounded-full inline-block">
-                                    <img className="w-10 h-10 rounded-full ring-4 ring-slate-400 ring-opacity-15" src={ user?.avater ? `${import.meta.env.VITE_IMAGE_ACCESS}/images/${user?.avater}` : "https://code-theme.com/html/findhouses/images/testimonials/ts-1.jpg"} alt="" />
+                                    <img className="w-10 h-10 rounded-full ring-4 ring-slate-400 ring-opacity-15" src={ user?.avater ? user?.avater : "https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg"} alt="" />
                                 </span>
                                 {
                                     isToggle &&   <ul className="absolute top-full right-0 w-[200px] bg-white rounded border border-gray-100  py-2">

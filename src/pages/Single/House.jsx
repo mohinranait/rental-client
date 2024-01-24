@@ -36,13 +36,13 @@ const House = () => {
                             <p className="text-xl font-bold text-gray-700 mb-4 ">Gallery</p>
                             <div>
                                 <div>
-                                    <img src={`${import.meta.env.VITE_IMAGE_ACCESS}/images/${house?.images[0]}`} className="mx-auto rounded" alt="" />
+                                    <img src={house?.images[0]} className="mx-auto rounded" alt="" />
                                 </div>
                                 <div className="grid grid-cols-7 items-center justify-center gap-2 mt-3">
                                     {
                                         house?.images?.map((img,index) => {
                                             return <span key={index}  className="border border-gray-100 rounded overflow-hidden">
-                                                <img src={`${import.meta.env.VITE_IMAGE_ACCESS}/images/${img}`} alt="" />
+                                                <img src={img} alt="" />
                                             </span>
                                         })
                                     }

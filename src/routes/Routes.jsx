@@ -28,7 +28,7 @@ const myRoutes = createBrowserRouter([
             {
                 path:"/house/:id",
                 element: <House />,
-                loader: ({params}) => fetch(`${import.meta.env.VITE_SERVER_PORT}//house/${params?.id}`)
+                loader: ({params}) => fetch(`${import.meta.env.VITE_SERVER_PORT}/house/${params?.id}`)
             },
             {
                 path:"/login",

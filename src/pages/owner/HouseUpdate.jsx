@@ -7,6 +7,7 @@ import data from "../../services/data";
 import { CgSpinnerTwo } from "react-icons/cg";
 import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
+import { uploadMultipleImage } from "../../services/uploadImage";
 
 
 const HouseUpdate = () => {
@@ -56,21 +57,25 @@ const HouseUpdate = () => {
         try {
             setLoading(true);
             // upload images
-            let imageArry = []
+            let images = []
             if(selectedFiles?.length > 0){
-                const formData = new FormData();
-                for (const file of selectedFiles) {
-                    formData.append('images', file);
-                }
-                const {data} = await axios.post(`/upload`, formData )
-                imageArry = [...imageArry, ...data.images ]
+
+                images = await uploadMultipleImage(selectedFiles);
+
+                // multer code
+                // const formData = new FormData();
+                // for (const file of selectedFiles) {
+                //     formData.append('images', file);
+                // }
+                // const {data} = await axios.post(`/upload`, formData )
+                // imageArry = [...imageArry, ...data.images ]
             }
            
             
             const updateObj =  {
                 ...house, 
                 extraFeatures: selectedFeatures, 
-                images: imageArry?.length > 0 ? imageArry : house?.images 
+                images: images?.length > 0 ? images : house?.images 
             }
             try {
                 // upload house information

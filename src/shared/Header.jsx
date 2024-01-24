@@ -42,7 +42,7 @@ const Header = ({isToggle, setIsToggle}) => {
                         {
                             user?._id && <div onClick={() => setIsToggle(!isToggle)} className="flex items-center gap-3 cursor-pointer relative">
                                 <span className="w-10 h-10 rounded-full inline-block">
-                                    <img className="w-10 h-10 rounded-full ring-4 ring-slate-100 ring-opacity-15" src={ user?.avater ? `${import.meta.env.VITE_IMAGE_ACCESS}/images/${user?.avater}` : "https://code-theme.com/html/findhouses/images/testimonials/ts-1.jpg"} alt="" />
+                                    <img className="w-10 h-10 rounded-full ring-4 ring-slate-100 ring-opacity-15" src={ user?.avater ? user?.avater : "https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg"} alt="" />
                                 </span>
                                 <span className={` ${location?.pathname =='/'? 'text-white':'text-gray-800' }`}>{user?.name}</span>
                                 {

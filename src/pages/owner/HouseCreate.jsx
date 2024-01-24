@@ -6,6 +6,7 @@ import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
 import { CgSpinnerTwo } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
+import { uploadMultipleImage } from "../../services/uploadImage";
 
 
 const HouseCreate = () => {
@@ -63,18 +64,24 @@ const HouseCreate = () => {
         if(!selectedFiles ) return setError("Please upload images")
         // console.log(selectedFeatures);
 
+      
+
         try {
             setLoading(true);
-            // upload images
-            const formData = new FormData();
-            for (const file of selectedFiles) {
-                formData.append('images', file);
-            }
-            const {data} = await axios.post(`/upload`, formData )
+            // // upload images using Multer
+            // const formData = new FormData();
+            // for (const file of selectedFiles) {
+            //     formData.append('images', file);
+            // }
+            // const {data} = await axios.post(`/upload`, formData )
+
+            // image upload using imgBB
+            const images = await uploadMultipleImage(selectedFiles);
+
             if(data.success){
                 try {
                     // upload house information
-                    const res = await axios.post(`/house`, {...house, extraFeatures: selectedFeatures, images:data?.images })
+                    const res = await axios.post(`/house`, {...house, extraFeatures: selectedFeatures, images })
                     if(res.data.success){
                         console.log(res.data);
                         setLoading(false)
