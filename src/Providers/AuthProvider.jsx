@@ -32,7 +32,7 @@ const AuthProvider = ({children}) => {
                 if(res.data?.success){
                     setLoading(false)
                     setUser(res.data?.user);
-                    console.log(res.data?.user);
+                    // console.log(res.data?.user);
                 }
             } catch (error) {
                 setLoading(false)

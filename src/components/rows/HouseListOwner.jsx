@@ -14,7 +14,7 @@ const HouseListOwner = ({house,index,deleteHouse}) => {
                     <span className="w-20 h-20 overflow-hidden inline-block border border-gray-200 rounded">
                         <img className="w-20 h-20" src={`${import.meta.env.VITE_IMAGE_ACCESS}/images/${images[0]}`} alt="" />
                     </span>
-                    <span>{name}</span>
+                    <Link to={`/house/${_id}`}>{name}</Link>
                 </td>
                 <td className="py-2">
                      {city}

@@ -42,7 +42,16 @@ const BookingForm = ({house}) => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    console.log(booking);
+    
+
+    function validateBDPhoneNumber(phoneNumber) {
+        // Regular expression pattern for Bangladeshi phone numbers
+        var pattern = /^(?:\+8801|01)[3-9]\d{8}$/;
+
+        // Test the phone number against the pattern
+        return pattern.test(phoneNumber);
+    }
+
 
     const handleAppoinment = async e => {
         e.preventDefault();
@@ -56,6 +65,11 @@ const BookingForm = ({house}) => {
         }
 
         const {phone,children, familyMember} = booking;
+        if (!validateBDPhoneNumber(phone)) {
+            return setError("BD number is invalid") 
+        }
+
+       
         if(phone?.length == 0 || children == 0 || familyMember == 0  ){
             setError("All fileds required");
             return;
