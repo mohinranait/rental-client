@@ -11,7 +11,6 @@ const Header = () => {
     const {user, logOut} = useAuth();
     const [isToggle, setIsToggle] = useState(false);
     const location = useLocation();
-    console.log(location?.pathname);
     return (
         <header className={`fixed w-full z-50 bg-white  ${location?.pathname =='/'? 'bg-opacity-10':'bg-white' } `}>
             <Container>
@@ -19,9 +18,23 @@ const Header = () => {
                     <div className="flex items-center gap-8">
                         <Logo />
                         <ul className="flex gap-5 items-center ">
-                            <li><a href="#" className={`font-medium ${location?.pathname =='/'? 'text-white':'text-gray-800' }`}>Home</a></li>
-                            <li><a href="#" className={`font-medium ${location?.pathname =='/'? 'text-white':'text-gray-800' }`}>About</a></li>
-                            <li><a href="#" className={`font-medium ${location?.pathname =='/'? 'text-white':'text-gray-800' }`}>Contact</a></li>
+                            <li><Link to="/" className={`font-medium ${location?.pathname =='/'? 'text-white':'text-gray-800' }`}>Home</Link></li>
+                            {
+                                user?._id ? <>
+                                    {
+                                        user?.role == 'houseRenter' ? 
+                                        <li><Link to="/user/dashboard" className={`font-medium ${location?.pathname =='/'? 'text-white':'text-gray-800' }`}>Dashboard</Link></li> 
+                                        : 
+                                        <li><Link to="/owner/dashboard" className={`font-medium ${location?.pathname =='/'? 'text-white':'text-gray-800' }`}>Dashboard</Link></li>
+                                    }
+                              
+                                </> : <>
+                                 <li><Link to="/login" className={`font-medium ${location?.pathname =='/'? 'text-white':'text-gray-800' }`}>Login</Link></li>
+                            <li><Link to="/register" className={`font-medium ${location?.pathname =='/'? 'text-white':'text-gray-800' }`}>Register</Link></li>
+                            </>
+                            }
+                           
+                          
                         </ul>
                     </div>
                     <div className="flex items-center gap-8">
@@ -33,13 +46,20 @@ const Header = () => {
                                 <span className={` ${location?.pathname =='/'? 'text-white':'text-gray-800' }`}>{user?.name}</span>
                                 {
                                     isToggle &&   <ul className="absolute top-full right-0 w-[200px] bg-white rounded border border-gray-100  py-2">
-                                        <li><Link to={`/owner/dashboard`} className="px-3 py-2 hover:bg-gray-100 inline-block w-full">Dashboard</Link></li>
+                                        {
+                                            user?.role === 'houseRenter' ? <>
+                                                <li><Link to={`/user/dashboard`} className="px-3 py-2 hover:bg-gray-100 inline-block w-full">Dashboard</Link></li>
+                                            </> : <>
+                                            <li><Link to={`/owner/dashboard`} className="px-3 py-2 hover:bg-gray-100 inline-block w-full">Dashboard</Link></li>
+                                            </>
+                                        }
+                                        
                                         <li><button onClick={() => logOut()} className="px-3 py-2 text-left hover:bg-gray-100 inline-block w-full">Logout</button></li>
                                     </ul>
                                 }
                             </div>
                         }
-                        <button className="px-4 py-2 inline-block bg-primary rounded text-white font-medium">Add Listing</button>
+                        <Link  to={`/owner/new-houses`} className="px-4 py-2 inline-block bg-primary rounded text-white font-medium">Add Listing</Link>
                     </div>
                 </div>
             </Container>

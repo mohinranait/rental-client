@@ -13,6 +13,8 @@ import PrivateRoute from "./PrivateRoute";
 import HouseUpdate from "../pages/owner/HouseUpdate";
 import House from "../pages/Single/House";
 import RantalDashboard from "../pages/Rental/RantalDashboard";
+import RantalLayout from "../layout/RantalLayout";
+import BookingsOrder from "../pages/owner/BookingsOrder";
 
 const myRoutes = createBrowserRouter([
     {
@@ -37,8 +39,14 @@ const myRoutes = createBrowserRouter([
                 element: <Register />
             },
             {
-                path:"/user/dashboard",
-                element: <PrivateRoute><RantalDashboard /></PrivateRoute>
+                path:'/user',
+                element : <PrivateRoute><RantalLayout /></PrivateRoute> ,
+                children: [
+                    {
+                        path: "dashboard",
+                        element : <RantalDashboard />
+                    }
+                ]
             },
         ]
     },
@@ -57,6 +65,10 @@ const myRoutes = createBrowserRouter([
             {
                 path: 'houses/:id',
                 element: <HouseUpdate />
+            },
+            {
+                path: 'bookings',
+                element: <BookingsOrder />
             },
             {
                 path: 'new-houses',

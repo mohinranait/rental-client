@@ -5,6 +5,7 @@ import ButtonPrimary from "../../components/buttons/ButtonPrimary";
 import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
 import { CgSpinnerTwo } from "react-icons/cg";
+import { useNavigate } from "react-router-dom";
 
 
 const HouseCreate = () => {
@@ -12,6 +13,7 @@ const HouseCreate = () => {
     const axios = useAxios();
     const [selectedFiles, setSelectedFiles] = useState(null);
     const [error, setError]= useState('')
+    const navigate = useNavigate();
     const [selectedFeatures, setSelectedFeatures] = useState([]);
     const [uploadImageText, setUploadImageText] = useState("Upload images");
     const [loading, setLoading]= useState(false)
@@ -76,23 +78,7 @@ const HouseCreate = () => {
                     if(res.data.success){
                         console.log(res.data);
                         setLoading(false)
-                        setHouse({
-                            name:'',
-                            address:'',
-                            city:'',
-                            bedrooms:1,
-                            bathrooms:1,
-                            roomSize:1,
-                            phone:'',
-                            description:'',
-                            features:false,
-                            property: {
-                                propertyId: '',
-                                propertyType: '',
-                                propertyStatus: '',
-                            },
-                            owner: user?._id,
-                        })
+                        navigate('/owner/houses')
                         // console.log('created success');
                     }
                 } catch (error) {

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import useAuth from '../hooks/useAuth';
-import { Link, Outlet } from 'react-router-dom';
-
+import {  NavLink, Outlet } from 'react-router-dom';
+import "./OwnerLayout.css"
 const OwnerLayout = () => {
     const {user,logOut} = useAuth();
     const [isToggle, setIsToggle] = useState(false)
@@ -9,10 +9,11 @@ const OwnerLayout = () => {
         <div>
             <div className='grid grid-cols-12 gap-5 mx-5 mt-5'>
                 <div className='col-span-2 bg-white '>
-                    <ul className='bg-white rounded p-5 min-h-[calc(100vh-40px)] shadow'>
-                        <li><Link to={'/owner/dashboard'} className='py-2 w-full inline-block bg-primary text-white rounded-md pl-2'>Dashboar</Link></li>
-                        <li><Link to={'/owner/new-houses'} className='py-2 w-full inline-block hover:bg-primary hover:text-white rounded-md pl-2'>New House</Link></li>
-                        <li><Link to={'/owner/houses'} className='py-2 w-full inline-block hover:bg-primary hover:text-white rounded-md pl-2'>Houses</Link></li>
+                    <ul className='ownerMenu bg-white rounded space-y-1 p-5 min-h-[calc(100vh-40px)] shadow'>
+                        <li><NavLink to={'/owner/dashboard'} className='py-2 w-full inline-block hover:bg-primary hover:text-white rounded-md pl-2'>Dashboar</NavLink></li>
+                        <li><NavLink to={'/owner/bookings'} className='py-2 w-full inline-block hover:bg-primary hover:text-white rounded-md pl-2'>Bookings</NavLink></li>
+                        <li><NavLink to={'/owner/new-houses'} className='py-2 w-full inline-block hover:bg-primary hover:text-white rounded-md pl-2'>New House</NavLink></li>
+                        <li><NavLink to={'/owner/houses'} className='py-2 w-full inline-block hover:bg-primary hover:text-white rounded-md pl-2'>Houses Lists</NavLink></li>
                     </ul>
                 </div>
                 <div className='col-span-10 '>

@@ -3,7 +3,7 @@
 import { Link } from "react-router-dom";
 
 
-const HouseListOwner = ({house,index}) => {
+const HouseListOwner = ({house,index,deleteHouse}) => {
 
     const {name,status,images, city,_id} = house || {};
     return (
@@ -29,7 +29,7 @@ const HouseListOwner = ({house,index}) => {
                         <Link to={`/owner/houses/${_id}`} className="px-2 py-1 inline-block bg-purple-600 text-white rounded">
                             Edit
                         </Link>
-                        <button className="px-2 py-1 inline-block bg-primary text-white rounded">
+                        <button onClick={() => deleteHouse(_id)} className="px-2 py-1 inline-block bg-primary text-white rounded">
                             Delete
                         </button>
                     </div>

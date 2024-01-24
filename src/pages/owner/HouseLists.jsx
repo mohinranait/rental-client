@@ -16,6 +16,19 @@ const HouseLists = () => {
         }
         getOwnerHouse();
     },[user?._id])
+
+    const deleteHouse = async (id) => {
+
+        try {
+            const res = await axios.delete(`/delete-house/${id}?userId=${user?._id}`);
+            if(res.data?.success){
+                const filters = houses?.filter(item => item?._id !== id);
+                setHouses(filters)
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
     return (
         <div className="bg-white px-5 py-5 rounded">
             <div>
@@ -31,7 +44,7 @@ const HouseLists = () => {
                     </thead>
                     <tbody>
                         {
-                            houses?.map((house,index) => <HouseListOwner key={house?._id} index={index} house={house} /> )
+                            houses?.map((house,index) => <HouseListOwner key={house?._id} deleteHouse={deleteHouse} index={index} house={house} /> )
                         }
                     
                     </tbody>

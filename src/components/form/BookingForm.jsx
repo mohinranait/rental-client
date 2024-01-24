@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import ButtonPrimary from '../buttons/ButtonPrimary';
 import Input from '../input/Input';
@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 
 const BookingForm = ({house}) => {
     const [loading, setLoading] = useState(false);
+    const [book, setBook] = useState(true);
     const [error, setError] = useState('')
     const {user} = useAuth();
     const axios = useAxios();
@@ -18,7 +19,7 @@ const BookingForm = ({house}) => {
         user: user?._id,
         name: user?.name,
         email: user?.email,
-        phone: '',
+        phone: user?.phone || '',
         familyMember: '',
         children: '',
         message: '',
@@ -35,11 +36,13 @@ const BookingForm = ({house}) => {
         bathrooms:house?.bathrooms,
         roomSize:house?.roomSize,
         garages:house?.garages,
-        extraFeatures: house?.extraFeatures
+        extraFeatures: house?.extraFeatures,
+        houseOwner : house?.owner
     })
     const location = useLocation();
     const navigate = useNavigate();
 
+    console.log(booking);
 
     const handleAppoinment = async e => {
         e.preventDefault();
@@ -53,7 +56,7 @@ const BookingForm = ({house}) => {
         }
 
         const {phone,children, familyMember} = booking;
-        if(phone?.length == 0 || children?.length ==0 || familyMember?.length == 0  ){
+        if(phone?.length == 0 || children == 0 || familyMember == 0  ){
             setError("All fileds required");
             return;
         }
@@ -63,10 +66,13 @@ const BookingForm = ({house}) => {
             setLoading(true)
             const res = await axios.post(`/booking?userId=${user?._id}`, booking);
             console.log(res?.data);
-            if(res.data?.success){
+            if(res.data?.message === 'Created'){
                 toast.success("Booking Successfull")
                 setLoading(false)
                 navigate('/user/dashboard')
+            }else if(res.data?.message === 'Your booking space is not available'){
+                setLoading(false)
+                toast.error(res.data?.message)
             }
         } catch (error) {
             setError(error.message)
@@ -75,6 +81,15 @@ const BookingForm = ({house}) => {
         }
 
     }
+
+    useEffect(() => {
+        const existsBooking = async () => {
+            const res  = await axios.get(`/exists-booking/${house?._id}?userId=${user?._id}`)
+            setBook(res.data?.booking);
+        }
+        existsBooking();
+    },[])
+
     return (
         <>
             <form onSubmit={handleAppoinment} className="space-y-5">
@@ -130,9 +145,15 @@ const BookingForm = ({house}) => {
                     onChange={e => setBooking({...booking, message: e.target.value})}
                     ></textarea>
                 </div>
-                <ButtonPrimary type={'submit'} options={'w-full py-3'}>
+                {
+                    book ?  <ButtonPrimary type={'submit'} options={'w-full py-3'}>
                     <span className="flex gap-2 items-center justify-center">  {loading ? <CgSpinnerTwo size={23} className="animate-spin" /> : 'Request Booking'}</span>
+                </ButtonPrimary> : 
+                 <ButtonPrimary type={'button'} bg={'bg-gray-300'} color={'text-gray-800'} options={'w-full py-3'}>
+                     Already booking
                 </ButtonPrimary>
+                }
+               
             </form>   
         </>
     );
