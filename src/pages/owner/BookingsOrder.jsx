@@ -17,8 +17,8 @@ const BookingsOrder = () => {
     },[user?._id])
     return (
         <div className="bg-white px-5 py-5 rounded">
-            <div>
-                <table className="w-full  border-collapse">
+            <div className="overflow-x-auto">
+                <table className="w-full min-w-[900px] border-collapse">
                     <thead>
                         <tr>
                             <td>ID</td>

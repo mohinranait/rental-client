@@ -8,8 +8,8 @@ const RantalLayout = () => {
     return (
         <div className="pt-28 mb-16">
             <Container>
-                <div className="grid  grid-cols-4 gap-6">
-                    <div className="">
+                <div className="grid  md:grid-cols-4 gap-6">
+                    <div className="hidden md:block">
                         <ul className="bg-white p-4 rounded shadow">
                             <li><Link to="/user/dashboard" className="inline-block w-full pl-3 rounded py-2 hover:bg-gray-200 hover:text-primary">Bookings</Link></li>
                             <li><button onClick={() => logOut()} className="inline-block w-full pl-3 text-left rounded py-2 hover:bg-gray-200 hover:text-primary">Logout</button></li>

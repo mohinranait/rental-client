@@ -2,13 +2,16 @@ import { useState } from 'react';
 import useAuth from '../hooks/useAuth';
 import {  NavLink, Outlet } from 'react-router-dom';
 import "./OwnerLayout.css"
+import MobileHeader from '../shared/MobileHeader';
+import { LuMenu } from 'react-icons/lu';
 const OwnerLayout = () => {
     const {user,logOut} = useAuth();
     const [isToggle, setIsToggle] = useState(false)
     return (
         <div>
-            <div className='grid grid-cols-12 gap-5 mx-5 mt-5'>
-                <div className='col-span-2 bg-white '>
+            <MobileHeader isToggle={isToggle} setIsToggle={setIsToggle} />
+            <div className='grid md:grid-cols-12 gap-5 mx-5 mt-5'>
+                <div className='col-span-2 hidden md:block bg-white '>
                     <ul className='ownerMenu bg-white rounded space-y-1 p-5 min-h-[calc(100vh-40px)] shadow'>
                         <li><NavLink to={'/owner/dashboard'} className='py-2 w-full inline-block hover:bg-primary hover:text-white rounded-md pl-2'>Dashboar</NavLink></li>
                         <li><NavLink to={'/owner/bookings'} className='py-2 w-full inline-block hover:bg-primary hover:text-white rounded-md pl-2'>Bookings</NavLink></li>
@@ -18,7 +21,12 @@ const OwnerLayout = () => {
                 </div>
                 <div className='col-span-10 '>
                     <div className='flex mb-5 w-full justify-between py-3 bg-white rounded shadow items-center px-4'>
-                        <span className='font-semibold'>Dashboard</span>
+                        <span className='font-semibold flex items-center gap-2'>
+                            <div onClick={() => setIsToggle(!isToggle)} className="md:hidden cursor-pointer">
+                                <LuMenu  size={20} />
+                            </div>
+                            Dashboard
+                        </span>
                         {
                             user?._id && <div onClick={() => setIsToggle(!isToggle)} className="flex items-center gap-3 cursor-pointer relative">
                                 

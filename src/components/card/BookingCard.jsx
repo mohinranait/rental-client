@@ -12,14 +12,14 @@ const BookingCard = ({booking,deleteBooking}) => {
 
     return (
         <div className="border overflow-hidden bg-white border-gray-200 rounded shadow">
-            <div className="grid xl:grid-cols-5 gap-4">
-                <div className="xl:col-span-2 flex items-center justify-center">
+            <div className="grid lg:grid-cols-5 gap-4">
+                <div className="lg:col-span-5 xl:col-span-2 flex items-center justify-center">
                     <img src={`${import.meta.env.VITE_IMAGE_ACCESS}/images/${houseImage}`} alt="" />
                 </div>
-                <div className="xl:col-span-2 py-4">
+                <div className="lg:col-span-3 xl:col-span-2 py-4 px-4 xl:px-0">
                     <p className="text-xl font-medium mb-1">{houseName}</p>
                     <p className="text-sm text-gray-600 flex gap-2 items-center mb-4"> <FaMapMarkerAlt /> {houseAddress}, {houseCity} </p>
-                    <div className='grid grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-y-4'>
+                    <div className='grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-y-4'>
                         <div className='flex gap-2 items-center text-sm text-gray-600'>
                             <span><IoBedOutline /></span> {bedrooms} Bedrooms
                         </div>
@@ -46,7 +46,7 @@ const BookingCard = ({booking,deleteBooking}) => {
                     </div>
                 </div>
                 <div>
-                    <div className=" space-y-3 mt-4 pb-4 ">
+                    <div className=" space-y-3 mt-4 pb-4 pl-4 lg:pl-0">
                         {
                             extraFeatures?.map((item , index)=> {
                                 return <div key={index} className="relative cursor-pointer flex flex-wrap items-center gap-3">

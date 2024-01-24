@@ -4,29 +4,27 @@ import Logo from "../components/logo/Logo";
 import useAuth from "../hooks/useAuth";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { LuMenu } from "react-icons/lu";
 
 
-
-const Header = () => {
+const Header = ({isToggle, setIsToggle}) => {
     const {user, logOut} = useAuth();
-    const [isToggle, setIsToggle] = useState(false);
     const location = useLocation();
     return (
         <header className={`fixed w-full z-50 bg-white  ${location?.pathname =='/'? 'bg-opacity-10':'bg-white' } `}>
             <Container>
-                <div className="flex items-center justify-between py-6">
+                <div className="flex items-center md:justify-between py-6">
                     <div className="flex items-center gap-8">
-                        <Logo />
-                        <ul className="flex gap-5 items-center ">
+                      
+                        <div className="hidden md:block">
+                            <Logo />
+                        </div>
+                        <ul className="hidden md:flex gap-5 items-center ">
+                     
                             <li><Link to="/" className={`font-medium ${location?.pathname =='/'? 'text-white':'text-gray-800' }`}>Home</Link></li>
                             {
                                 user?._id ? <>
-                                    {
-                                        user?.role == 'houseRenter' ? 
-                                        <li><Link to="/user/dashboard" className={`font-medium ${location?.pathname =='/'? 'text-white':'text-gray-800' }`}>Dashboard</Link></li> 
-                                        : 
-                                        <li><Link to="/owner/dashboard" className={`font-medium ${location?.pathname =='/'? 'text-white':'text-gray-800' }`}>Dashboard</Link></li>
-                                    }
+                                     <li><Link to="/user/dashboard" className={`font-medium ${location?.pathname =='/'? 'text-white':'text-gray-800' }`}>Dashboard</Link></li> 
                               
                                 </> : <>
                                  <li><Link to="/login" className={`font-medium ${location?.pathname =='/'? 'text-white':'text-gray-800' }`}>Login</Link></li>
@@ -38,6 +36,9 @@ const Header = () => {
                         </ul>
                     </div>
                     <div className="flex items-center gap-8">
+                        <div onClick={() => setIsToggle(!isToggle)} className="md:hidden cursor-pointer">
+                            <LuMenu  size={20} />
+                        </div>
                         {
                             user?._id && <div onClick={() => setIsToggle(!isToggle)} className="flex items-center gap-3 cursor-pointer relative">
                                 <span className="w-10 h-10 rounded-full inline-block">
